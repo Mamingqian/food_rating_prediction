@@ -192,10 +192,10 @@ Logistic regression assumes linear relationships, which might oversimplify the p
 ### **Features Added and Their Importance**
 
 1. **Interaction Feature: `calories_protein`**
-   - **Why It Matters**: The interaction between `calories` and `protein` reflects the nutrient density of the recipe, which could influence user satisfaction. For example, recipes that are high in both calories and protein may be perceived as more filling or nutritious, leading to higher ratings. By including this feature, we capture the joint effect of these nutritional properties, which are likely important for user decision-making.
+   - **Why It Matters**: The interaction between `calories` and `protein` reflects the nutrient density of the recipe, which could influence user satisfaction. For example, recipes that are high in both calories and protein may be perceived as more filling or nutritious, leading to higher ratings. By including this feature, we capture the joint effect of these nutritional properties, which are likely important for the final tastes and people's rating toward the recipe.
 
 2. **Text Features: `review` and `description` with TF-IDF (Bigrams)**
-   - **Why It Matters**: Textual descriptions (`description`) and user reviews (`review`) contain rich contextual information. The inclusion of bi-grams (two-word phrases) allows us to capture common patterns or sentiments (e.g., "easy recipe", "too salty"), providing insights into recipe quality or user preferences.
+   - **Why It Matters**: Textual descriptions (`description`) and user reviews (`review`) contain rich contextual information. The inclusion of bi-grams modeling allows us to capture common patterns or sentiments (e.g., "easy recipe", "too salty"), providing insights into recipe quality or user preferences.
    - **Reason for N-gram Choice**: Bigrams enhance the interpretability and informativeness of text data by considering local word relationships while maintaining computational efficiency.
 
 3. **TF-IDF Parameters**:
@@ -204,30 +204,23 @@ Logistic regression assumes linear relationships, which might oversimplify the p
 
 4. **Nutrition Parsing**:
    - **`calories (#), total fat (PDV), sugar (PDV), sodium (PDV), protein (PDV), saturated fat (PDV), carbohydrates (PDV)`**: The nutritional information is parsed to extract key nutrient values and percentages of daily values (PDV). These features provide insights into the healthiness and balance of the recipe, which can influence user ratings.
----
 
-### **Modeling Algorithm and Hyperparameters**
-
-1. **Algorithm: Random Forest Classifier**
-   - **Why It Was Chosen**: Random Forest is a robust, ensemble-based algorithm that can handle non-linear relationships, high-dimensional features, and mixed data types (numerical and text). It also inherently captures feature interactions without requiring explicit feature engineering.
-
-2. **Preprocessing Pipeline**:
-   - A `ColumnTransformer` pipeline standardizes numerical features and vectorizes text features, ensuring that both types of data are appropriately prepared for the model. The new features and feature interactions are added into the pipeline to create a comprehensive feature set.
+All these new features are added to the final model to enhance predictive performance and capture nuanced patterns in user feedback and recipe attributes. We aim to improve the rating prediction by introducing the new features and interaction term.
 
 ---
 
 ### **Improvement Over Baseline Model**
 
-1. **Baseline Model**:
-   - The baseline model used a simpler logistic regression classifier. While logistic regression is interpretable, it assumes linear relationships between features and the target variable, which may not capture complex interactions inherent in the data.
-   - The baseline did not include interaction terms or use bi-grams for textual data, limiting its ability to leverage rich contextual and interactive information.
+1. Architecture Improvement: By introducing Random Forest as the classifier instead of a simple logistic regression model, we leverage the ensemble learning technique to capture complex interactions between features and enhance predictive performance. Random Forest is robust to overfitting and can handle non-linear relationships, making it suitable for our multi-feature, multi-class classification problem with both text and numerical data.
 
-2. **Final Model**:
-   - **Performance Improvement**: By adding the interaction feature (`calories_protein`), refining text preprocessing (bigrams), adding nutrition information, and using Random Forest, the final model captures non-linear relationships and subtle contextual patterns. This addresses the limitations of the baseline and leverages the richer data representation.
-   - **Macro-Averaged AUC**: The improved model achieves Macro-Averaged AUC of 0.8548, which is higher compared to the baseline, indicating better performance across all rating classes, particularly in handling the imbalanced rating distribution.
+2. Performance Analysis: The improved model achieves Macro-Averaged AUC of 0.8548, which is higher compared to the baseline, indicating better performance across all rating classes, even with the addition of new features and complexity. This indicates that our model generalizes well to unseen data and predicts rating better, proving that the additional features and the new model architecture are effective in enhancing predictive performance.
 
----
 
-### **Conclusion**
+## Conclusion
 
-The final model demonstrates the importance of combining domain-specific features (e.g., `calories_protein`) with advanced preprocessing techniques (TF-IDF bi-grams) and a robust classifier (Random Forest). These enhancements allow the model to better understand the complex relationships between recipe attributes, user feedback, and ratings, resulting in a meaningful performance improvement over the baseline. Future steps could involve hyperparameter tuning and exploring additional interaction terms or sentiment analysis for further refinement.
+Our study highlights the potential of leveraging recipe attributes and user feedback to predict ratings. By advancing from a simple logistic regression model to a Random Forest classifier with refined features, we improved predictive performance and captured meaningful insights into user preferences. The final model's robustness makes it valuable for real-world applications in recipe platforms, offering practical tools to optimize content and enhance user satisfaction. Future work could explore deep learning models and additional user-centric features to further refine predictions.
+
+
+
+
+
